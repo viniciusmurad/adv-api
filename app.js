@@ -1,9 +1,19 @@
 var express = require('express'),
+	mongoose = require('mongoose'),
 	bodyParser = require('body-parser');
 
 var app = express();
 
-/* test route */
+
+/* Route */
+
+var Nota = require('../models/nota');
+notaRouter = require('../routes/nota')(Nota);
+
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+
+/* TEST route. */
 app.get('/', function(req, res) {
 	res.send('working...');
 })
