@@ -1,15 +1,16 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
 	bodyParser = require('body-parser'),
-	load = require('express-load'),
 	config = require('./config');
 
 var app = express();
 
-/* Routers */
-load('routes', {cwd: 'app'})
-	.then('models')
-	.into(app);
+
+/* Load routes */
+require('./app/routes/nota')(app);
+require('./app/routes/cliente')(app);
+require('./app/routes/audiencia')(app);
+require('./app/routes/atendimento')(app);
 
 /* Database */
 mongoose.connect(config.database);
@@ -38,4 +39,3 @@ app.listen(port, function() {
 	console.log('Server listening on port ' + port);
 })
 
-module.exports = app;
