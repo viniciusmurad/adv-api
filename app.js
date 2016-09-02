@@ -11,6 +11,8 @@ require('./app/routes/nota')(app);
 require('./app/routes/cliente')(app);
 require('./app/routes/audiencia')(app);
 require('./app/routes/atendimento')(app);
+require('./app/models/nota')(app);
+
 
 /* Database */
 mongoose.connect(config.database);
@@ -39,3 +41,4 @@ app.listen(port, function() {
 	console.log('Server listening on port ' + port);
 })
 
+module.exports = app;

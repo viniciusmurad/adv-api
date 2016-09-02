@@ -1,4 +1,4 @@
 module.exports = {
-	'database' : 'localhost/adv',
-	'database_test' : ''
+	'database' : 'mongodb://localhost/adv'
+	
 };
