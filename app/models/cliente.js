@@ -7,9 +7,9 @@ var Cliente = new Schema({
 	email : String,
 	dt_nascimento : String,
 	cliente : {
-			type: mongoose.Schema.Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: Usuario
-		}
+		},
 	nota : [{
 		dt_nota : Date,
 		texto : String

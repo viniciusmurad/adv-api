@@ -5,14 +5,16 @@ var express = require('express'),
 
 var app = express();
 
+/* Middleware */
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
 /* Load routes */
 require('./app/routes/nota')(app);
 require('./app/routes/cliente')(app);
 require('./app/routes/audiencia')(app);
 require('./app/routes/atendimento')(app);
-require('./app/models/nota')(app);
-
+require('./app/routes/usuario')(app);
 
 /* Database */
 mongoose.connect(config.database);
@@ -25,10 +27,6 @@ mongoose.connection.on('error', function (err) {
 mongoose.connection.on('disconnected', function () {
 	console.log("MongoDB disconnected");
 });
-
-/* Middleware */
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
 
 /* Test route. */
 app.get('/', function(req, res) {
