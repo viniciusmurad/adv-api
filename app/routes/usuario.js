@@ -2,6 +2,7 @@ module.exports = function(app) {
 	
 	var Usuario = require('../models/usuario');
 
+	/* GET all usuarios */
 	app.get('/usuarios', function(req, res) {
 		Usuario.find({}).exec(function(err, usuarios) {
 			if(err) {
@@ -13,6 +14,7 @@ module.exports = function(app) {
 		})
 	})
 
+	/* GET byId usuario */
 	app.get('/usuarios/:id', function(req, res) {
 		Usuario.findById(req.params.id).exec(function(err, usuario) {
 			if(err) {
@@ -24,6 +26,7 @@ module.exports = function(app) {
 		})
 	})
 
+	/* POST usuario */
 	app.post('/usuarios', function(req, res) {
 		var novoUsuario = new Usuario(req.body);
 		novoUsuario.save(function(err, usuarios) {
@@ -35,8 +38,4 @@ module.exports = function(app) {
 			console.log(usuarios);
 		})
 	})
-
-
-
-
 }
