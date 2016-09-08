@@ -6,20 +6,23 @@ var Cliente = new Schema({
 	celular : Number,
 	email : String,
 	dt_nascimento : String,
-	cliente : {
+	usuario: {
 			type: Schema.Types.ObjectId,
-			ref: Usuario
+			ref: 'Usuario'
 		},
 	nota : [{
 		dt_nota : Date,
-		texto : String
+		texto : String,
+		_id : Schema.Types.ObjectId
 	}],
 	audiencia : [{
 		dt_audiencia : Date,
-		horario : String
+		horario : String,
+		_id : Schema.Types.ObjectId
 	}],
 	atendimento: [{
-		dt_atendimento : Date
+		dt_atendimento : Date,
+		_id : Schema.Types.ObjectId
 	}]
 });
 

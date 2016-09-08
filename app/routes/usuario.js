@@ -26,7 +26,7 @@ module.exports = function(app) {
 		})
 	})
 
-	/* POST usuario */
+	/* ADD usuario */
 	app.post('/usuarios', function(req, res) {
 		var novoUsuario = new Usuario(req.body);
 		novoUsuario.save(function(err, usuarios) {
