@@ -10,10 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 /* Load routes */
-require('./app/routes/nota')(app);
 require('./app/routes/cliente')(app);
-require('./app/routes/audiencia')(app);
-require('./app/routes/atendimento')(app);
 require('./app/routes/usuario')(app);
 
 /* Database */
