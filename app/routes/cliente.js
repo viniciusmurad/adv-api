@@ -4,7 +4,6 @@ module.exports = function(app) {
 	var Cliente = require('../models/cliente');
 
 	/* FEATURES CLIENTE */
-
 	/* GET all clientes com seu respectivo usuário */
 	app.get('/clientes', function(req, res) {
 		Cliente.find({}).exec(function(err, clientes){
@@ -21,7 +20,7 @@ module.exports = function(app) {
 
 	/* GET cliente de um determinado usuário */
 	app.get('/clientes/:id', function(req, res) {
-		Cliente.find(req.params.id).exec(function(err, clientes){
+		Cliente.findById(req.params.id).exec(function(err, clientes){
 			Usuario.populate(clientes, {path: "usuario"}, function(err, clientes) {
 				if (err) {
 					res.status(500).json(err);
@@ -73,23 +72,39 @@ module.exports = function(app) {
 	})
 	/* END FEATURES CLIENTE */
 
-	/* FEATURES NOTA */
 
+	/* FEATURES NOTA */
 	/* ADD nota */
 	app.post('/clientes/notas', function(req, res) {
-		Cliente.nota.push({
-			dt_nota: req.body.dt_nota,
-			texto: req.body.texto,
-			clienteId: req.body.clienteId
-		})
+		Cliente.findById(req.body.clienteId, function(err, cliente) {
+			if(!err) {
+				cliente.nota.push({
+					dt_nota: req.body.dt_nota,
+					texto: req.body.texto,
+					clienteId: req.body.clienteId
+				})
 
-		Cliente.save(function(err, notas) {
-			if(err) {
+				cliente.save(function(err, nota) {
+					if (err) {
+						res.status(500).json(err);
+						console.log(err);
+					}
+					res.json(nota);
+					console.log(nota);
+				})
+			}
+		})
+	})
+
+	/* GET uma nota por id */
+	app.get('/clientes/notas/:id', function(req, res) {
+		Cliente.findById(req.body.id, function(err, nota) {
+			if (err) {
 				res.status(500).json(err);
 				console.log(err);
 			}
-			res.json(notas);
-			console.log(notas);
+			res.json(nota);
+			console.log(nota);
 		})
 	})
 
