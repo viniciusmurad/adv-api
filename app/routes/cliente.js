@@ -13,7 +13,7 @@ module.exports = function(app) {
 					console.log(err);
 				}
 				res.json(clientes);
-				console.log(clientes);
+				console.log('get todos clientes');
 			})
 		})
 	})
@@ -27,7 +27,7 @@ module.exports = function(app) {
 					console.log(err);
 				}
 				res.json(clientes);
-				console.log(clientes);
+				console.log('get um cliente');
 			})
 		})
 	})
@@ -43,7 +43,7 @@ module.exports = function(app) {
 				console.log(err);
 			}
 			res.json(clientes);
-			console.log(clientes);
+			console.log('get todos os clientes');
 		})
 	})
 
@@ -55,7 +55,7 @@ module.exports = function(app) {
 				console.log(err);
 			} 
 			res.json(cliente);
-			console.log(cliente);
+			console.log('cliente atualizado');
 		})
 	})
 
@@ -67,7 +67,7 @@ module.exports = function(app) {
 				console.log(err);
 			} 
 			res.json(cliente);
-			console.log(cliente);
+			console.log('cliente removido');
 		})
 	})
 	/* END FEATURES CLIENTE */
@@ -90,23 +90,44 @@ module.exports = function(app) {
 						console.log(err);
 					}
 					res.json(nota);
-					console.log(nota);
+					console.log('nota adicionada');
 				})
 			}
 		})
 	})
 
 	/* GET uma nota por id */
-	app.get('/clientes/notas/:id', function(req, res) {
-		Cliente.findById(req.body.id, function(err, nota) {
-			if (err) {
+	app.get('/clientes/:id/notas/:notaID', function(req, res) {
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
 				res.status(500).json(err);
 				console.log(err);
 			}
-			res.json(nota);
-			console.log(nota);
+			var notaById = cliente.nota.id(req.params.notaID);
+			res.json(notaById);
+			console.log('get uma nota');
 		})
 	})
+
+	/* DELETE um cliente por id */
+	app.delete('/clientes/:id/notas/:notaID', function(req, res){
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
+				console.log(err);
+			}
+			var notaById = cliente.nota.id(req.params.notaID).remove();
+			cliente.save(function(err, notaById) {
+				if(err) {
+					res.status(500).json(err);
+					console.log(err);
+				}
+				res.json(notaById);
+				console.log('nota removida'); 
+			})
+		})
+	})
+
+
 
 	/* END FEATURES NOTA */
 }
