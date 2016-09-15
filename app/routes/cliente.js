@@ -109,7 +109,7 @@ module.exports = function(app) {
 		})
 	})
 
-	/* DELETE um cliente por id */
+	/* DELETE uma nota por id */
 	app.delete('/clientes/:id/notas/:notaID', function(req, res){
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
@@ -127,7 +127,184 @@ module.exports = function(app) {
 		})
 	})
 
-
-
+	/* UPDATE uma nota por id */
+	app.put('/clientes/:id/notas/:notaID', function(req, res) {
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
+				console.log(err);
+			}
+			
+			var notaById = cliente.nota.id(req.params.notaID);
+				notaById.dt_nota = req.body.dt_nota;
+				notaById.texto = req.body.texto;
+				
+			cliente.save(function(err, notaById) {
+				if (err) {
+					res.status(500).json(err);
+					console.log(err);
+				}
+				res.json(notaById);
+				console.log('nota atualizada');
+			})
+		})
+	})
 	/* END FEATURES NOTA */
+
+	/* FEATURES AUDIÊNCIA */
+	/* ADD audiência */
+	app.post('/clientes/audiencias', function(req, res) {
+		Cliente.findById(req.body.clienteId, function(err, cliente) {
+			if(!err) {
+				cliente.audiencia.push({
+					dt_audiencia: req.body.dt_audiencia,
+					horario: req.body.horario,
+					clienteId: req.body.clienteId
+				})
+
+				cliente.save(function(err, audiencia) {
+					if (err) {
+						res.status(500).json(err);
+						console.log(err);
+					}
+					res.json(audiencia);
+					console.log('audiencia adicionada');
+				})
+			}
+		})
+	})
+
+	/* GET uma audiência por id */
+	app.get('/clientes/:id/audiencias/:audienciaID', function(req, res) {
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
+				res.status(500).json(err);
+				console.log(err);
+			}
+			var audienciaById = cliente.audiencia.id(req.params.audienciaID);
+			res.json(audienciaById);
+			console.log('get uma audiência');
+		})
+	})
+
+	/* DELETE uma audiência por id */
+	app.delete('/clientes/:id/audiencias/:audienciaID', function(req, res){
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
+				console.log(err);
+			}
+			var audienciaById = cliente.audiencia.id(req.params.audienciaID).remove();
+			cliente.save(function(err, audienciaById) {
+				if(err) {
+					res.status(500).json(err);
+					console.log(err);
+				}
+				res.json(audienciaById);
+				console.log('audiência removida'); 
+			})
+		})
+	})
+
+	/* UPDATE uma audiência por id */
+	app.put('/clientes/:id/audiencias/:audienciaID', function(req, res) {
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
+				console.log(err);
+			}
+			
+			var audienciaById = cliente.audiencia.id(req.params.audienciaID);
+				audienciaById.dt_audiencia = req.body.dt_audiencia;
+				audienciaById.horario = req.body.horario;
+
+
+			cliente.save(function(err, audienciaById) {
+				if (err) {
+					res.status(500).json(err);
+					console.log(err);
+				}
+				res.json(audienciaById);
+				console.log('audiência atualizada');
+			})
+		})
+	})
+	/* END FEATURES AUDIÊNCIA */
+
+	/* FEATURES ATENDIMENTO */
+	/* ADD atendimento */
+	app.post('/clientes/atendimentos', function(req, res) {
+		Cliente.findById(req.body.clienteId, function(err, cliente) {
+			if(!err) {
+				cliente.atendimento.push({
+					dt_atendimento: req.body.dt_atendimento,
+					clienteId: req.body.clienteId
+				})
+
+				cliente.save(function(err, atendimento) {
+					if (err) {
+						res.status(500).json(err);
+						console.log(err);
+					}
+					res.json(atendimento);
+					console.log('atendimento adicionada');
+				})
+			}
+		})
+	})
+
+	/* GET uma atendimento por id */
+	app.get('/clientes/:id/atendimentos/:atendimentoID', function(req, res) {
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
+				res.status(500).json(err);
+				console.log(err);
+			}
+			var atendimentoById = cliente.atendimento.id(req.params.atendimentoID);
+			res.json(atendimentoById);
+			console.log('get um atendimento');
+		})
+	})
+
+	/* DELETE um atendimento por id */
+	app.delete('/clientes/:id/atendimentos/:atendimentoID', function(req, res){
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
+				console.log(err);
+			}
+			var atendimentoById = cliente.atendimento.id(req.params.atendimentoID).remove();
+			cliente.save(function(err, atendimentoById) {
+				if(err) {
+					res.status(500).json(err);
+					console.log(err);
+				}
+				res.json(atendimentoById);
+				console.log('atendimento removida'); 
+			})
+		})
+	})
+
+	/* UPDATE uma audiência por id */
+	app.put('/clientes/:id/atendimentos/:atendimentoID', function(req, res) {
+		Cliente.findById(req.params.id, function(err, cliente) {
+			if(err) {
+				console.log(err);
+			}
+			
+			var atendimentoById = cliente.atendimento.id(req.params.atendimentoID);
+				atendimentoById.dt_atendimento = req.body.dt_atendimento;
+				
+
+			cliente.save(function(err, atendimentoById) {
+				if (err) {
+					res.status(500).json(err);
+					console.log(err);
+				}
+				res.json(atendimentoById);
+				console.log('atendimento atualizada');
+			})
+		})
+	})
+	/* END FEATURES ATENDIMENTO */
+
+
+
+
 }
