@@ -10,7 +10,7 @@ module.exports = function(app) {
 				console.log(err);
 			}
 			res.json(usuarios);
-			console.log(usuarios);
+			console.log('get usuários');
 		})
 	})
 
@@ -22,7 +22,7 @@ module.exports = function(app) {
 				console.log(err);
 			}
 			res.json(usuario);
-			console.log(usuario);
+			console.log('get um usuário');
 		})
 	})
 
@@ -35,7 +35,18 @@ module.exports = function(app) {
 				console.log(err);
 			}
 			res.json(usuarios);
-			console.log(usuarios);
+			console.log('usuário adicionado');
+		})
+	})
+
+	app.delete('/usuarios/:id', function(req, res) {
+		Usuario.findOneAndRemove(req.params.id).exec(function(err, usuario) {
+			if (err) {
+				res.status(500).json(err);
+				console.log(err);
+			} 
+			res.json(usuario);
+			console.log('usuário atualizado');
 		})
 	})
 }

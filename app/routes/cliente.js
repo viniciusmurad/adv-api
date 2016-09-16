@@ -83,7 +83,6 @@ module.exports = function(app) {
 					texto: req.body.texto,
 					clienteId: req.body.clienteId
 				})
-
 				cliente.save(function(err, nota) {
 					if (err) {
 						res.status(500).json(err);
