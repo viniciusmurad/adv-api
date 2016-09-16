@@ -6,10 +6,12 @@ var express = require('express'),
 var app = express();
 
 /* Middleware */
+app.set('secret', 'segredo');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 /* Load routes */
+require('./app/routes/auth')(app);
 require('./app/routes/cliente')(app);
 require('./app/routes/usuario')(app);
 
