@@ -30,24 +30,4 @@ module.exports = function(app) {
 				res.sendStatus(401);
 			})
 	})
-
-	app.use('/*', function(req, res, next) {
-		var token = req.headers['x-access-token'];
-		if (token) {
-			console.log('verificando token');
-			jwt.verify(token, app.get('secret'), function(err, decoded) {
-				if(err) {
-					console.log('token inválido');
-					res.sendStatus(401);
-				}
-				req.usuario = decoded;
-				next();
-			})
-		} else {
-			console.log('token não enviado');
-			res.sendStatus(401);
-		}
-		
-	})
-
 }

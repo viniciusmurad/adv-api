@@ -1,9 +1,10 @@
 module.exports = function(app) {
 	
 	var Usuario = require('../models/usuario');
-
+	var isAuthenticated = require('../middlewares/auth');
+	
 	/* GET all usuarios */
-	app.get('/usuarios', function(req, res) {
+	app.get('/usuarios', isAuthenticated, function(req, res) {
 		Usuario.find({}).exec(function(err, usuarios) {
 			if(err) {
 				res.status(500).json(err);
@@ -15,7 +16,7 @@ module.exports = function(app) {
 	})
 
 	/* GET byId usuario */
-	app.get('/usuarios/:id', function(req, res) {
+	app.get('/usuarios/:id', isAuthenticated, function(req, res) {
 		Usuario.findById(req.params.id).exec(function(err, usuario) {
 			if(err) {
 				res.status(500).json(err);
@@ -39,7 +40,7 @@ module.exports = function(app) {
 		})
 	})
 
-	app.delete('/usuarios/:id', function(req, res) {
+	app.delete('/usuarios/:id', isAuthenticated, function(req, res) {
 		Usuario.findOneAndRemove(req.params.id).exec(function(err, usuario) {
 			if (err) {
 				res.status(500).json(err);

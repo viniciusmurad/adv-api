@@ -2,10 +2,11 @@ module.exports = function(app) {
 	
 	var Usuario = require('../models/usuario');
 	var Cliente = require('../models/cliente');
+	var isAuthenticated = require('../middlewares/auth');
 
 	/* FEATURES CLIENTE */
 	/* GET all clientes com seu respectivo usuário */
-	app.get('/clientes', function(req, res) {
+	app.get('/clientes', isAuthenticated, function(req, res) {
 		Cliente.find({}).exec(function(err, clientes){
 			Usuario.populate(clientes, {path: "usuario"}, function(err, clientes) {
 				if (err) {
@@ -19,7 +20,7 @@ module.exports = function(app) {
 	})
 
 	/* GET cliente de um determinado usuário */
-	app.get('/clientes/:id', function(req, res) {
+	app.get('/clientes/:id', isAuthenticated, function(req, res) {
 		Cliente.findById(req.params.id).exec(function(err, clientes){
 			Usuario.populate(clientes, {path: "usuario"}, function(err, clientes) {
 				if (err) {
@@ -33,7 +34,7 @@ module.exports = function(app) {
 	})
 
 	/* ADD cliente de um determinado usuário */
-	app.post('/clientes', function(req, res) {
+	app.post('/clientes', isAuthenticated, function(req, res) {
 		Cliente = new Cliente(req.body);
 		Cliente.usuario._id = req.body.usuario._id;
 		
@@ -48,7 +49,7 @@ module.exports = function(app) {
 	})
 
 	/* UPDATE cliente */
-	app.put('/clientes/:id', function(req, res) {
+	app.put('/clientes/:id', isAuthenticated, function(req, res) {
 		Cliente.findByIdAndUpdate(req.params.id, req.body, function(err, cliente) {
 			if (err) {
 				res.status(500).json(err);
@@ -60,7 +61,7 @@ module.exports = function(app) {
 	})
 
 	/* DELETE cliente */
-	app.delete('/clientes/:id', function(req, res) {
+	app.delete('/clientes/:id', isAuthenticated, function(req, res) {
 		Cliente.findOneAndRemove({_id: req.params.id}, function(err, cliente) {
 			if(err) {
 				res.status(500).json(err);
@@ -75,7 +76,7 @@ module.exports = function(app) {
 
 	/* FEATURES NOTA */
 	/* ADD nota */
-	app.post('/clientes/notas', function(req, res) {
+	app.post('/clientes/notas', isAuthenticated, function(req, res) {
 		Cliente.findById(req.body.clienteId, function(err, cliente) {
 			if(!err) {
 				cliente.nota.push({
@@ -96,7 +97,7 @@ module.exports = function(app) {
 	})
 
 	/* GET uma nota por id */
-	app.get('/clientes/:id/notas/:notaID', function(req, res) {
+	app.get('/clientes/:id/notas/:notaID', isAuthenticated, function(req, res) {
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				res.status(500).json(err);
@@ -109,7 +110,7 @@ module.exports = function(app) {
 	})
 
 	/* DELETE uma nota por id */
-	app.delete('/clientes/:id/notas/:notaID', function(req, res){
+	app.delete('/clientes/:id/notas/:notaID', isAuthenticated, function(req, res){
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				console.log(err);
@@ -127,7 +128,7 @@ module.exports = function(app) {
 	})
 
 	/* UPDATE uma nota por id */
-	app.put('/clientes/:id/notas/:notaID', function(req, res) {
+	app.put('/clientes/:id/notas/:notaID', isAuthenticated, function(req, res) {
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				console.log(err);
@@ -151,7 +152,7 @@ module.exports = function(app) {
 
 	/* FEATURES AUDIÊNCIA */
 	/* ADD audiência */
-	app.post('/clientes/audiencias', function(req, res) {
+	app.post('/clientes/audiencias', isAuthenticated, function(req, res) {
 		Cliente.findById(req.body.clienteId, function(err, cliente) {
 			if(!err) {
 				cliente.audiencia.push({
@@ -173,7 +174,7 @@ module.exports = function(app) {
 	})
 
 	/* GET uma audiência por id */
-	app.get('/clientes/:id/audiencias/:audienciaID', function(req, res) {
+	app.get('/clientes/:id/audiencias/:audienciaID', isAuthenticated, function(req, res) {
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				res.status(500).json(err);
@@ -186,7 +187,7 @@ module.exports = function(app) {
 	})
 
 	/* DELETE uma audiência por id */
-	app.delete('/clientes/:id/audiencias/:audienciaID', function(req, res){
+	app.delete('/clientes/:id/audiencias/:audienciaID', isAuthenticated, function(req, res){
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				console.log(err);
@@ -204,7 +205,7 @@ module.exports = function(app) {
 	})
 
 	/* UPDATE uma audiência por id */
-	app.put('/clientes/:id/audiencias/:audienciaID', function(req, res) {
+	app.put('/clientes/:id/audiencias/:audienciaID', isAuthenticated, function(req, res) {
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				console.log(err);
@@ -229,7 +230,7 @@ module.exports = function(app) {
 
 	/* FEATURES ATENDIMENTO */
 	/* ADD atendimento */
-	app.post('/clientes/atendimentos', function(req, res) {
+	app.post('/clientes/atendimentos', isAuthenticated, function(req, res) {
 		Cliente.findById(req.body.clienteId, function(err, cliente) {
 			if(!err) {
 				cliente.atendimento.push({
@@ -250,7 +251,7 @@ module.exports = function(app) {
 	})
 
 	/* GET uma atendimento por id */
-	app.get('/clientes/:id/atendimentos/:atendimentoID', function(req, res) {
+	app.get('/clientes/:id/atendimentos/:atendimentoID', isAuthenticated, function(req, res) {
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				res.status(500).json(err);
@@ -263,7 +264,7 @@ module.exports = function(app) {
 	})
 
 	/* DELETE um atendimento por id */
-	app.delete('/clientes/:id/atendimentos/:atendimentoID', function(req, res){
+	app.delete('/clientes/:id/atendimentos/:atendimentoID', isAuthenticated, function(req, res){
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				console.log(err);
@@ -281,7 +282,7 @@ module.exports = function(app) {
 	})
 
 	/* UPDATE uma audiência por id */
-	app.put('/clientes/:id/atendimentos/:atendimentoID', function(req, res) {
+	app.put('/clientes/:id/atendimentos/:atendimentoID', isAuthenticated, function(req, res) {
 		Cliente.findById(req.params.id, function(err, cliente) {
 			if(err) {
 				console.log(err);

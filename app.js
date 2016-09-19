@@ -6,7 +6,7 @@ var express = require('express'),
 var app = express();
 
 /* Middleware */
-app.set('secret', 'segredo');
+app.set('secret', config.secret);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
