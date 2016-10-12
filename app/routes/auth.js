@@ -13,7 +13,7 @@ module.exports = function(app) {
 					res.sendStatus(401);
 				} else {
 					var token = jwt.sign({login: usuario.login}, app.get('secret'), {
-						expiresIn: 84600
+						expiresIn: "7 days"
 					});
 					console.log('token criado');
 					res.set('x-access-token', token);

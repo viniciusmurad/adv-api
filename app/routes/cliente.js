@@ -8,7 +8,7 @@ module.exports = function(app) {
 	/* GET all clientes com seu respectivo usuário */
 	app.get('/clientes', isAuthenticated, function(req, res) {
 		Cliente.find({}).exec(function(err, clientes){
-			Usuario.populate(clientes, {path: "usuario"}, function(err, clientes) {
+			Usuario.populate(clientes, {path: 'usuario'}, function(err, clientes) {
 				if (err) {
 					res.status(500).json(err);
 					console.log(err);
@@ -22,7 +22,7 @@ module.exports = function(app) {
 	/* GET cliente de um determinado usuário */
 	app.get('/clientes/:id', isAuthenticated, function(req, res) {
 		Cliente.findById(req.params.id).exec(function(err, clientes){
-			Usuario.populate(clientes, {path: "usuario"}, function(err, clientes) {
+			Usuario.populate(clientes, {path: 'usuario'}, function(err, clientes) {
 				if (err) {
 					res.status(500).json(err);
 					console.log(err);
